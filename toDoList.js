@@ -4,10 +4,8 @@ class Person {
     }
     
     getAge(){
-        let age = 0;
-        let nowYear = new Date();
-            age = nowYear.getFullYear() - this.dateOfBirth.getFullYear()
-        return age; 
+        let nowYear = new Date().getFullYear();
+        return nowYear - this.dateOfBirth.getFullYear(); 
     }
     pluralization(number){
         let num_10 = number % 10;
@@ -23,42 +21,52 @@ class Person {
     } 
       
 }
+String.prototype.changeTheFirstLetter = function(word){
+    return this.slice(0 , 1).toUpperCase() + this.slice(1 , this.length)
+}
+
 function sortPerson(arrPerson,mounth){
     let sort = new Map();
     let newArrPerson = []; //отсортирований масив за місяцем
     if (mounth == 0){
         for(let i = 0; i < arrPerson.length; i ++){
-            if(arrPerson[i].dateOfBirth.getMonth() == 9){
+            if(arrPerson[i].dateOfBirth.getMonth() == new Date().getMonth()){
                 newArrPerson.push(arrPerson[i])
             }
         } 
     } else if (mounth == 1){
         for(let i = 0; i < arrPerson.length; i ++){
-            if(arrPerson[i].dateOfBirth.getMonth() == 9 || arrPerson[i].dateOfBirth.getMonth() == 10){
+            if(arrPerson[i].dateOfBirth.getMonth() == new Date().getMonth() || arrPerson[i].dateOfBirth.getMonth() == new Date().getMonth()+1){
                 newArrPerson.push(arrPerson[i])
             }
         }
     } else if (mounth == 2){
         for(let i = 0; i < arrPerson.length; i ++){
-            if(arrPerson[i].dateOfBirth.getMonth() == 9 || arrPerson[i].dateOfBirth.getMonth() == 10 || arrPerson[i].dateOfBirth.getMonth() == 11){
+            if(arrPerson[i].dateOfBirth.getMonth() == new Date().getMonth() || arrPerson[i].dateOfBirth.getMonth() == new Date().getMonth()+1 || arrPerson[i].dateOfBirth.getMonth() == new Date().getMonth()+2){
                 newArrPerson.push(arrPerson[i])
             }
         }
     }
     newArrPerson.sort((a,b) => {return a.dateOfBirth.getMonth() - b.dateOfBirth.getMonth()})
-    let arrObjOctomber = []
-    let arrObjNovember = []
-    let arrObjDecember = []
+    let arrObjCurrentMonth = []
+    let arrObjCurrentAndNextMonth = []
+    let arrObjCurrentAndTwoNextMonth = []
+    let now = new Date();
+    let nextMonth = new Date();
+    let nextTwoMonth = new Date();
+    nextMonth.setMonth(now.getMonth()+1)
+    nextTwoMonth.setMonth(now.getMonth()+2)
+    
     for(let i = 0 ; i < newArrPerson.length; i++){
-        if(newArrPerson[i].dateOfBirth.getMonth() == 9){
-            arrObjOctomber.push(newArrPerson[i])
-            sort.set('Жовтень 2022', arrObjOctomber)
-        } else if (newArrPerson[i].dateOfBirth.getMonth() == 10){
-            arrObjNovember.push(newArrPerson[i])
-            sort.set('Листопад 2022', arrObjNovember)
-        } else if (newArrPerson[i].dateOfBirth.getMonth() == 11){
-            arrObjDecember.push(newArrPerson[i])
-            sort.set('Грудень 2022', arrObjDecember)
+        if(newArrPerson[i].dateOfBirth.getMonth() == new Date().getMonth()){
+            arrObjCurrentMonth.push(newArrPerson[i])
+            sort.set(`${new Date().toLocaleDateString( 'uk-UA', {month: 'long'}).changeTheFirstLetter()} ${new Date().getFullYear()}`, arrObjCurrentMonth)
+        } else if (newArrPerson[i].dateOfBirth.getMonth() == new Date().getMonth() + 1){
+            arrObjCurrentAndNextMonth.push(newArrPerson[i])
+            sort.set(`${nextMonth.toLocaleDateString( 'uk-UA', {month: 'long'}).changeTheFirstLetter()} ${new Date().getFullYear()}`, arrObjCurrentAndNextMonth)
+        } else if (newArrPerson[i].dateOfBirth.getMonth() == new Date().getMonth() + 2){
+            arrObjCurrentAndTwoNextMonth.push(newArrPerson[i])
+            sort.set(`${nextTwoMonth.toLocaleDateString( 'uk-UA', {month: 'long'}).changeTheFirstLetter()} ${new Date().getFullYear()}`, arrObjCurrentAndTwoNextMonth)
         }
     }
     sort.forEach((value,key) => {
@@ -74,6 +82,6 @@ let person = [
     new Person({dateOfBirth: new Date('2005-12-13'), name: "Коля Новорічний"}),
     new Person({dateOfBirth: new Date('1978-11-18'), name: "Стас Різдвяний"})
  ];
-console.log(sortPerson(person,1))
+console.log(sortPerson(person,2))
 
 
