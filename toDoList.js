@@ -7,24 +7,24 @@ class Person {
         let nowYear = new Date().getFullYear();
         return nowYear - this.dateOfBirth.getFullYear(); 
     }
-    pluralization(number){
-        let num_10 = number % 10;
-        let num_100 = number % 100;
-        if (num_100 >= 11 && num_100 <= 19 || num_10 >= 5 && num_10 <= 9 || num_10 == 0 ) {
-            return( number + " років");
-        } else if (num_10 >= 2 && num_10 <= 4 ) {
-            return( number + " роки");
-        }  else if (num_10 == 1) {
-            return( number + " рік");
-        }
-    
-    } 
+     
       
 }
 String.prototype.changeTheFirstLetter = function(word){
     return this.slice(0 , 1).toUpperCase() + this.slice(1 , this.length)
 }
+function pluralization(number){
+    let num_10 = number % 10;
+    let num_100 = number % 100;
+    if (num_100 >= 11 && num_100 <= 19 || num_10 >= 5 && num_10 <= 9 || num_10 == 0 ) {
+        return( number + " років");
+    } else if (num_10 >= 2 && num_10 <= 4 ) {
+        return( number + " роки");
+    }  else if (num_10 == 1) {
+        return( number + " рік");
+    }
 
+}
 function sortPerson(arrPerson,mounth){
     let sort = new Map();
     let newArrPerson = []; //отсортирований масив за місяцем
@@ -72,7 +72,7 @@ function sortPerson(arrPerson,mounth){
     sort.forEach((value,key) => {
         console.log(key)
         value.sort((a,b) => {return b.dateOfBirth - a.dateOfBirth})
-             .forEach((value,key) => { console.log(`(${value.dateOfBirth.getDate()}) - ${value.name} - (${new Person(value).pluralization(new Person(value).getAge())})`)})
+             .forEach((value,key) => { console.log(`(${value.dateOfBirth.getDate()}) - ${value.name} - (${pluralization(new Person(value).getAge())})`)})
         
     })   
 } 
@@ -82,6 +82,6 @@ let person = [
     new Person({dateOfBirth: new Date('2005-12-13'), name: "Коля Новорічний"}),
     new Person({dateOfBirth: new Date('1978-11-18'), name: "Стас Різдвяний"})
  ];
-console.log(sortPerson(person,2))
+sortPerson(person,2)
 
 
